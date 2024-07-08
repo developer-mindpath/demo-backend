@@ -1,0 +1,15 @@
+pip install django-ninja
+django-admin startproject myproject
+pip freeze > requirements.txt
+cd myproject 
+./manage.py runserver
+python manage.py migrate
+pip install djangorestframework djangorestframework-simplejwt
+pip install cryptography
+pip install pydantic[email]
+
+
+
+
+
+
