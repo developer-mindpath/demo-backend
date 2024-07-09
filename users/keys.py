@@ -1,21 +1,14 @@
 import base64
 
-from cryptography.hazmat.primitives import hashes, serialization
-from cryptography.hazmat.primitives.asymmetric import padding
+from Crypto.Cipher import PKCS1_OAEP
+from Crypto.PublicKey import RSA
 
 from users.config import PRIVATE_KEY
 
 
 def decrypt_message(encrypted_message):
-    private_key = serialization.load_pem_private_key(
-        PRIVATE_KEY.encode('utf-8'), password=None)
-    encrypted_bytes = base64.b64decode(encrypted_message.encode('utf-8'))
-    decrypted = private_key.decrypt(
-        encrypted_bytes,
-        padding.OAEP(
-            mgf=padding.MGF1(algorithm=hashes.SHA256()),
-            algorithm=hashes.SHA256(),
-            label=None,
-        ),
-    )
+    private_key = RSA.import_key(PRIVATE_KEY.encode('utf-8'))
+    cipher = PKCS1_OAEP.new(private_key)
+    encrypted_bytes = base64.b64decode(encrypted_message)
+    decrypted = cipher.decrypt(encrypted_bytes)
     return decrypted.decode('utf-8')

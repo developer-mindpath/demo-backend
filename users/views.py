@@ -21,6 +21,7 @@ from users.schemas import LoginSchema, SignupSchema
 
 api = NinjaAPI(title=PROJECT_TITLE)
 
+
 @api.post("/signup", response=dict, tags=["User"])
 @csrf_exempt
 def signup(request: HttpRequest, payload: SignupSchema) -> JsonResponse:
@@ -41,6 +42,7 @@ def signup(request: HttpRequest, payload: SignupSchema) -> JsonResponse:
         logger.info(e)
         return JsonResponse(SIGNUP_ERROR, status=HTTP_400_BAD_REQUEST)
 
+
 @api.post("/login", response=dict, tags=["User"])
 @csrf_exempt
 def login(request: HttpRequest, payload: LoginSchema) -> JsonResponse:
@@ -59,6 +61,7 @@ def login(request: HttpRequest, payload: LoginSchema) -> JsonResponse:
         logger.info(e)
         return JsonResponse(LOGIN_ERROR, status=HTTP_400_BAD_REQUEST)
 
+
 @api.post("/logout", response=dict, tags=["User"])
 @csrf_exempt
 def logout(request: HttpRequest) -> JsonResponse:
@@ -69,6 +72,7 @@ def logout(request: HttpRequest) -> JsonResponse:
         return JsonResponse(LOGOUT_SUCCESS, status=HTTP_200_OK)
     except Token.DoesNotExist:
         return JsonResponse(LOGOUT_ERROR, status=HTTP_401_UNAUTHORIZED)
+
 
 @api.get("/users/{user_id}", response=dict, tags=["User"])
 @csrf_exempt
