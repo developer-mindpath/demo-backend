@@ -130,4 +130,4 @@ REST_FRAMEWORK = {
     ),
 }
 
-ALLOWED_HOSTS = ['2aa1-125-99-185-146.ngrok-free.app', '127.0.0.1']
+ALLOWED_HOSTS = ['3c96-125-99-185-146.ngrok-free.app', '127.0.0.1']

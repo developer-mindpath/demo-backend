@@ -1,0 +1,7 @@
+FIRST_NAME_LENGTH_ERROR = 'First name must be between 1 and 50 characters long'
+FIRST_NAME_ALPHA_ERROR = 'First name must contain only alphabetic characters'
+LAST_NAME_LENGTH_ERROR = 'Last name must be up to 50 characters long'
+LAST_NAME_ALPHA_ERROR = 'Last name must contain only alphabetic characters'
+PASSWORD_LENGTH_ERROR = 'Password must be between 8 and 128 characters long'
+PASSWORD_DIGIT_ERROR = 'Password must contain at least one digit'
+PASSWORD_ALPHA_ERROR = 'Password must contain at least one letter'
