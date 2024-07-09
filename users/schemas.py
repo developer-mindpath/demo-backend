@@ -1,13 +1,18 @@
+import re
 from typing import Optional
 
 from ninja import Schema
 from ninja.errors import HttpError
 from pydantic import field_validator
 
-from .constants.messages import (FIRST_NAME_ALPHA_ERROR, FIRST_NAME_LENGTH_ERROR,
-                       LAST_NAME_ALPHA_ERROR, LAST_NAME_LENGTH_ERROR,
-                       PASSWORD_ALPHA_ERROR, PASSWORD_DIGIT_ERROR,
-                       PASSWORD_LENGTH_ERROR)
+from users.constants.messages import (EMAIL_INVALID_ERROR,
+                                      FIRST_NAME_ALPHA_ERROR,
+                                      FIRST_NAME_LENGTH_ERROR,
+                                      LAST_NAME_ALPHA_ERROR,
+                                      LAST_NAME_LENGTH_ERROR,
+                                      PASSWORD_ALPHA_ERROR,
+                                      PASSWORD_DIGIT_ERROR,
+                                      PASSWORD_LENGTH_ERROR)
 
 
 class SignupSchema(Schema):
@@ -41,6 +46,13 @@ class SignupSchema(Schema):
             raise HttpError(400, PASSWORD_DIGIT_ERROR)
         if not any(char.isalpha() for char in value):
             raise HttpError(400, PASSWORD_ALPHA_ERROR)
+        return value
+
+    @field_validator('email')
+    def email_validation(cls, value):
+        email_regex = re.compile(r"(^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$)")
+        if not email_regex.match(value):
+            raise HttpError(400, EMAIL_INVALID_ERROR)
         return value
 
 

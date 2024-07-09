@@ -5,3 +5,4 @@ LAST_NAME_ALPHA_ERROR = 'Last name must contain only alphabetic characters'
 PASSWORD_LENGTH_ERROR = 'Password must be between 8 and 128 characters long'
 PASSWORD_DIGIT_ERROR = 'Password must contain at least one digit'
 PASSWORD_ALPHA_ERROR = 'Password must contain at least one letter'
+EMAIL_INVALID_ERROR = "Email is not valid."
