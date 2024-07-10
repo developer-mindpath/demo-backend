@@ -7,15 +7,13 @@ from django.views.decorators.csrf import csrf_exempt
 from ninja import NinjaAPI
 from rest_framework.authtoken.models import Token
 
-from constants.constants import AUTHORIZATION, LOGIN_ERROR_MESSAGE, LOGIN_INVALID_CREDENTIANLS_MESSAGE, LOGOUT_SUCCESS_MESSAGE, PROJECT_TITLE, SIGNUP_ERROR_MESSAGE, TOKEN_ERROR_MESSAGE
-from constants.enums.http_status_code import HttpStatus
-from constants.messages import LOGIN_MESSAGE, PROFILE_MESSAGE, SIGN_UP_MESSAGE
-from constants.helper.decryption_helper import logger
-from constants.types.response.login import LoginSuccessResponseSchema
-from constants.types.response.sign_up import SignupSuccessResponseSchema
-from constants.types.response.user_profile import UserProfileResponseSchema
-from constants.types.requests.schemas import LoginSchema, SignupSchema
-from users.keys import decrypt_message
+from common.auth.authentication import decrypt_message
+from common.constants.constants import AUTHORIZATION, PROJECT_TITLE
+from common.constants.enums.http_status_code import HttpStatus
+from common.constants.messages import LOGIN_ERROR_MESSAGE, LOGIN_INVALID_CREDENTIANLS_MESSAGE, LOGIN_MESSAGE, LOGOUT_SUCCESS_MESSAGE, PROFILE_MESSAGE, SIGN_UP_MESSAGE, SIGNUP_ERROR_MESSAGE, TOKEN_ERROR_MESSAGE
+from common.constants.helper.logger_helper import logger
+from users.schemas import LoginSchema, LoginSuccessResponseSchema, SignupSchema, SignupSuccessResponseSchema, UserProfileResponseSchema
+
 
 api = NinjaAPI(title=PROJECT_TITLE)
 

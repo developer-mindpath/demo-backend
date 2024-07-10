@@ -1,13 +1,8 @@
-HTTP_200_OK = 200
-HTTP_201_CREATED = 201
-HTTP_400_BAD_REQUEST = 400
-HTTP_401_UNAUTHORIZED = 401
-HTTP_500_INTERNAL_SERVER_ERROR = 500
+PROFILE_MESSAGE = "Profile retrieved successfully"
+LOGIN_MESSAGE = "Login successful"
+SIGN_UP_MESSAGE = "User created successfully"
 SIGNUP_ERROR_MESSAGE = "Signup failed"
 LOGIN_INVALID_CREDENTIANLS_MESSAGE  = "Invalid email or password"
 LOGIN_ERROR_MESSAGE = "Invalid request"
 LOGOUT_SUCCESS_MESSAGE = "Logout successful"
 TOKEN_ERROR_MESSAGE =  "Invalid token"
-PROJECT_TITLE = "Django Project"
-USER_ID = "user_id"
-AUTHORIZATION = 'Authorization'
