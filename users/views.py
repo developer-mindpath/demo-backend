@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.http import HttpRequest, JsonResponse
@@ -8,7 +6,7 @@ from ninja import NinjaAPI
 from rest_framework.authtoken.models import Token
 
 from common.auth.authentication import decrypt_message
-from common.constants.common import AUTHORIZATION, PROJECT_TITLE
+from common.constants.common import AUTHORIZATION, PROJECT_TITLE, USER
 from common.enums.http_status_code import HttpStatus
 from common.constants.messages import LOGIN_INVALID_CREDENTIANLS_MESSAGE, LOGIN_MESSAGE, LOGOUT_SUCCESS_MESSAGE, PROFILE_MESSAGE, SIGN_UP_MESSAGE, SIGNUP_ERROR_MESSAGE, TOKEN_ERROR_MESSAGE
 from common.helpers.logger_helper import logger
@@ -17,7 +15,7 @@ from users.schemas import LoginSchema, LoginSuccessResponseSchema, SignupSchema,
 api = NinjaAPI(title=PROJECT_TITLE)
 
 
-@api.post("/signup", response=SignupSuccessResponseSchema, tags=["User"])
+@api.post("/signup", response=SignupSuccessResponseSchema, tags=[USER])
 @csrf_exempt
 def signup(request: HttpRequest, payload: SignupSchema) -> JsonResponse:
     try:
@@ -35,7 +33,7 @@ def signup(request: HttpRequest, payload: SignupSchema) -> JsonResponse:
         return JsonResponse(SIGNUP_ERROR_MESSAGE, status=HttpStatus.HTTP_500_INTERNAL_SERVER_ERROR.value, safe=False)
 
 
-@api.post("/login", response=LoginSuccessResponseSchema, tags=["User"])
+@api.post("/login", response=LoginSuccessResponseSchema, tags=[USER])
 @csrf_exempt
 def login(request: HttpRequest, payload: LoginSchema) -> JsonResponse:
     try:
@@ -56,7 +54,7 @@ def login(request: HttpRequest, payload: LoginSchema) -> JsonResponse:
         return JsonResponse(SIGNUP_ERROR_MESSAGE, status=HttpStatus.HTTP_500_INTERNAL_SERVER_ERROR.value, safe=False)
 
 
-@api.post("/logout", response=dict, tags=["User"])
+@api.post("/logout", response=dict, tags=[USER])
 @csrf_exempt
 def logout(request: HttpRequest) -> JsonResponse:
     try:
@@ -71,7 +69,7 @@ def logout(request: HttpRequest) -> JsonResponse:
         return JsonResponse(SIGNUP_ERROR_MESSAGE, status=HttpStatus.HTTP_500_INTERNAL_SERVER_ERROR.value, safe=False)
 
 
-@api.get("/user", response=UserProfileResponseSchema, tags=["User"])
+@api.get("/user", response=UserProfileResponseSchema, tags=[USER])
 @csrf_exempt
 def user(request: HttpRequest) -> JsonResponse:
     try:
