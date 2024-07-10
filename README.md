@@ -3,9 +3,9 @@ This Django application contains the backend code for the demo web-app.
 
 # Getting Started
 To run the Django backend on your own system, follow these steps:
-1.	Installation process
-2.	Setup .env File
-3.	Starting Servers
+   1.	Installation process
+   2.	Setup .env File
+   3.	Starting Servers
 
 1. **Installation Process:**
    - Ensure you have Python installed, preferably version 3.10 or above.
