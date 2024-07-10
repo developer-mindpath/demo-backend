@@ -27,3 +27,7 @@ class UserProfileResponseSchema(Schema):
     username: str
     email: str
     message: str
+
+
+class LogoutResponseSchema(Schema):
+    message: str
