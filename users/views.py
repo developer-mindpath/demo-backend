@@ -10,7 +10,7 @@ from rest_framework.authtoken.models import Token
 from common.auth.authentication import decrypt_message
 from common.constants.common import AUTHORIZATION, PROJECT_TITLE
 from common.enums.http_status_code import HttpStatus
-from common.constants.messages import LOGIN_ERROR_MESSAGE, LOGIN_INVALID_CREDENTIANLS_MESSAGE, LOGIN_MESSAGE, LOGOUT_SUCCESS_MESSAGE, PROFILE_MESSAGE, SIGN_UP_MESSAGE, SIGNUP_ERROR_MESSAGE, TOKEN_ERROR_MESSAGE
+from common.constants.messages import LOGIN_INVALID_CREDENTIANLS_MESSAGE, LOGIN_MESSAGE, LOGOUT_SUCCESS_MESSAGE, PROFILE_MESSAGE, SIGN_UP_MESSAGE, SIGNUP_ERROR_MESSAGE, TOKEN_ERROR_MESSAGE
 from common.helpers.logger_helper import logger
 from users.schemas import LoginSchema, LoginSuccessResponseSchema, SignupSchema, SignupSuccessResponseSchema, UserProfileResponseSchema
 
@@ -35,7 +35,7 @@ def signup(request: HttpRequest, payload: SignupSchema) -> JsonResponse:
         return JsonResponse(response, status=HttpStatus.HTTP_200_OK.value, safe=True)
     except Exception as e:
         logger.info(e)
-        return JsonResponse(data=SIGNUP_ERROR_MESSAGE, status=HttpStatus.HTTP_400_BAD_REQUEST.value, safe=False)
+        return JsonResponse(SIGNUP_ERROR_MESSAGE, status=HttpStatus.HTTP_500_INTERNAL_SERVER_ERROR.value, safe=False)
 
 
 @api.post("/login", response=LoginSuccessResponseSchema, tags=["User"])
@@ -45,7 +45,8 @@ def login(request: HttpRequest, payload: LoginSchema) -> JsonResponse:
         decrypted_email = decrypt_message(payload.email)
         decrypted_password = decrypt_message(payload.password)
         user = authenticate(username=decrypted_email, password=decrypted_password)
-        if not user:
+        print("user : - ", user)
+        if user:
             token, is_created = Token.objects.get_or_create(user=user)
             response = LoginSuccessResponseSchema(
                 message=LOGIN_MESSAGE,
@@ -56,7 +57,7 @@ def login(request: HttpRequest, payload: LoginSchema) -> JsonResponse:
             return JsonResponse(LOGIN_INVALID_CREDENTIANLS_MESSAGE, status=HttpStatus.HTTP_401_UNAUTHORIZED.value, safe=False)
     except Exception as e:
         logger.info(e)
-        return JsonResponse(LOGIN_ERROR_MESSAGE, status=HttpStatus.HTTP_400_BAD_REQUEST.value, safe=False)
+        return JsonResponse(SIGNUP_ERROR_MESSAGE, status=HttpStatus.HTTP_500_INTERNAL_SERVER_ERROR.value, safe=False)
 
 
 @api.post("/logout", response=dict, tags=["User"])
