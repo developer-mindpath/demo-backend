@@ -1,8 +1,8 @@
 # Introduction 
-TODO: This Django application contains the backend code for the demo web-app. 
+This Django application contains the backend code for the demo web-app. 
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
+To run the Django backend on your own system, follow these steps:
 1.	Installation process
 2.	Setup .env File
 3.	Starting Servers
