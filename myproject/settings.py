@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+from config import BACK_END_DOMAIN, FRONT_END_DOMAIN
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +27,7 @@ SECRET_KEY = 'django-insecure-n*-4$vge%6jv)^37au9kss(@$8+ua@bt!dvefim9ow1kqo&s88
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3c96-125-99-185-146.ngrok-free.app', '127.0.0.1',]
+ALLOWED_HOSTS = ['127.0.0.1', BACK_END_DOMAIN]
 
 
 # Application definition
@@ -42,12 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_ALL_ORIGINS = True
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'https://8513-125-99-185-146.ngrok-free.app',
-]
+CORS_ALLOWED_ORIGINS = [FRONT_END_DOMAIN]
 
 CORS_ALLOW_CREDENTIALS = True
 
