@@ -14,7 +14,6 @@ from common.constants.messages import LOGIN_INVALID_CREDENTIANLS_MESSAGE, LOGIN_
 from common.helpers.logger_helper import logger
 from users.schemas import LoginSchema, LoginSuccessResponseSchema, SignupSchema, SignupSuccessResponseSchema, UserProfileResponseSchema
 
-
 api = NinjaAPI(title=PROJECT_TITLE)
 
 
@@ -22,14 +21,12 @@ api = NinjaAPI(title=PROJECT_TITLE)
 @csrf_exempt
 def signup(request: HttpRequest, payload: SignupSchema) -> JsonResponse:
     try:
-        timestamp = datetime.now().timestamp() * 1000000
         user = User.objects.create_user(
             username=payload.email,
             first_name=payload.first_name,
             last_name=payload.last_name,
             email=payload.email,
             password=payload.password,
-            id=timestamp
         )
         response = SignupSuccessResponseSchema(message=SIGN_UP_MESSAGE).dict()
         return JsonResponse(response, status=HttpStatus.HTTP_200_OK.value, safe=True)
@@ -45,7 +42,6 @@ def login(request: HttpRequest, payload: LoginSchema) -> JsonResponse:
         decrypted_email = decrypt_message(payload.email)
         decrypted_password = decrypt_message(payload.password)
         user = authenticate(username=decrypted_email, password=decrypted_password)
-        print("user : - ", user)
         if user:
             token, is_created = Token.objects.get_or_create(user=user)
             response = LoginSuccessResponseSchema(
