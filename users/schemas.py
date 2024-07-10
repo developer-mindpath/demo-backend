@@ -1,4 +1,4 @@
-from typing import Optional, Any
+from typing import Optional
 
 from ninja import Schema
 
@@ -17,13 +17,11 @@ class LoginSchema(Schema):
 
 class LoginSuccessResponseSchema(Schema):
     message: str
-    user_id: int
-    token: Any
+    token: str
 
 
 class SignupSuccessResponseSchema(Schema):
     message: str
-    user_id: int
     
 
 class UserProfileResponseSchema(Schema):
