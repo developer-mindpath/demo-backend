@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.http import HttpRequest, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from ninja import NinjaAPI
@@ -9,7 +10,7 @@ from rest_framework.authtoken.models import Token
 from common.auth.authentication import decrypt_message
 from common.constants.common import AUTHORIZATION, PROJECT_TITLE, USER
 from common.enums.http_status_code import HttpStatus
-from common.constants.messages import INTERNAL_SERVER_ERROR_MESSAGE, LOGIN_INVALID_CREDENTIANLS_MESSAGE, LOGIN_MESSAGE, LOGOUT_SUCCESS_MESSAGE, PROFILE_MESSAGE, SIGN_UP_MESSAGE, SIGNUP_ERROR_MESSAGE, TOKEN_ERROR_MESSAGE
+from common.constants.messages import EMAIL_ALREADY_EXISTS, EXCEPTION_OCCURED, INTERNAL_SERVER_ERROR_MESSAGE, LOGIN_INVALID_CREDENTIANLS_MESSAGE, LOGIN_MESSAGE, LOGOUT_SUCCESS_MESSAGE, PROFILE_MESSAGE, SIGN_UP_MESSAGE, TOKEN_ERROR_MESSAGE
 from common.helpers.logger_helper import logger
 from users.schemas import LoginSchema, LoginSuccessResponseSchema, LogoutResponseSchema, SignupSchema, SignupSuccessResponseSchema, UserProfileResponseSchema
 
@@ -29,8 +30,11 @@ def signup(request: HttpRequest, payload: SignupSchema) -> JsonResponse:
         )
         response = SignupSuccessResponseSchema(message=SIGN_UP_MESSAGE).dict()
         return JsonResponse(response, status=HttpStatus.HTTP_200_OK.value, safe=True)
+    except IntegrityError as e:
+        logger.exception(f"{EXCEPTION_OCCURED} {e}")
+        raise HttpError(HttpStatus.HTTP_409_CONFLICT.value, EMAIL_ALREADY_EXISTS)
     except Exception as e:
-        logger.info(e)
+        logger.exception(f"{EXCEPTION_OCCURED} {e}")
         raise HttpError(HttpStatus.HTTP_500_INTERNAL_SERVER_ERROR.value, INTERNAL_SERVER_ERROR_MESSAGE)
 
 
@@ -51,9 +55,10 @@ def login(request: HttpRequest, payload: LoginSchema) -> JsonResponse:
         else:
             raise HttpError(HttpStatus.HTTP_401_UNAUTHORIZED.value, LOGIN_INVALID_CREDENTIANLS_MESSAGE)
     except HttpError as e:
+        logger.exception(f"{EXCEPTION_OCCURED} {e}")
         raise e
     except Exception as e:
-        logger.info(e)
+        logger.exception(f"{EXCEPTION_OCCURED} {e}")
         raise HttpError(HttpStatus.HTTP_500_INTERNAL_SERVER_ERROR.value, INTERNAL_SERVER_ERROR_MESSAGE)
 
 
@@ -67,9 +72,10 @@ def logout(request: HttpRequest) -> JsonResponse:
         response = LogoutResponseSchema(message=LOGOUT_SUCCESS_MESSAGE).dict()
         return JsonResponse(response, status=HttpStatus.HTTP_200_OK.value, safe=False)
     except Token.DoesNotExist:
+        logger.exception(f"{EXCEPTION_OCCURED} {e}")
         raise HttpError(HttpStatus.HTTP_401_UNAUTHORIZED.value, TOKEN_ERROR_MESSAGE)
     except Exception as e:
-        logger.info(e)
+        logger.exception(f"{EXCEPTION_OCCURED} {e}")
         raise HttpError(HttpStatus.HTTP_500_INTERNAL_SERVER_ERROR.value, INTERNAL_SERVER_ERROR_MESSAGE)
 
 
@@ -87,7 +93,8 @@ def user(request: HttpRequest) -> JsonResponse:
         ).dict()
         return JsonResponse(response, status=HttpStatus.HTTP_200_OK.value, safe=False)
     except Token.DoesNotExist:
+        logger.exception(f"{EXCEPTION_OCCURED} {e}")
         raise HttpError(HttpStatus.HTTP_401_UNAUTHORIZED.value, TOKEN_ERROR_MESSAGE)
     except Exception as e:
-        logger.info(e)
+        logger.exception(f"{EXCEPTION_OCCURED} {e}")
         raise HttpError(HttpStatus.HTTP_500_INTERNAL_SERVER_ERROR.value, INTERNAL_SERVER_ERROR_MESSAGE)
